@@ -1,6 +1,8 @@
 package com.example.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,7 @@ import java.util.UUID;
 
 @Entity(name = "storeOrder")
 @Getter
+@JsonView
 @NoArgsConstructor
 public class Order {
     @Id
@@ -23,6 +26,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @Setter
+    @JsonIgnore
     private User user;
 
 }

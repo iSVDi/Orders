@@ -1,10 +1,8 @@
 package com.example.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +24,6 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    @JsonView(UserViews.UserDetails.class)
+    @Setter
     private List<Order> orders;
 }
