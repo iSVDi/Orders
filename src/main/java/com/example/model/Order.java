@@ -6,19 +6,18 @@ import jakarta.validation.constraints.NotBlank;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity(name = "storeOrder")
 @Getter
-@JsonView
+@AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Builder
+@JsonView
+
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -7,20 +7,19 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity (name = "storeUser")
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
-
-public class User {
+@Generated
+@Builder
+public class User implements Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @JsonView(UserViews.UserSummary.class)
@@ -42,4 +41,15 @@ public class User {
     @NotNull
     @Valid
     private List<Order> orders;
+
+    @Override
+    public User clone() {
+        try {
+            User clone = (User) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }
