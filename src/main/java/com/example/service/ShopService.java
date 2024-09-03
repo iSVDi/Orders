@@ -1,6 +1,7 @@
 package com.example.service;
 
-
+import com.example.exception.ShopException;
+import com.example.exception.ShopExceptionType;
 import com.example.model.Order;
 import com.example.model.User;
 import com.example.repository.OrderRepository;
@@ -19,18 +20,21 @@ public class ShopService {
 
     public void createUser(User user) {
         User savedUser = userRepository.save(user);
-        user.getOrders().stream().forEach( order -> {
+        user.getOrders().forEach(order -> {
             order.setUser(savedUser);
             orderRepository.save(order);
         });
 
     }
 
-    public User readUser(UUID id) {
-        User user = userRepository.findById(id).get();
-        List<Order> orderList = orderRepository.findByUser(user);
-        user.setOrders(orderList);
-        return user;
+    public User readUser(UUID id) throws ShopException {
+        if (userRepository.existsById(id)) {
+            User user = userRepository.findById(id).get();
+            List<Order> orderList = orderRepository.findByUser(user);
+            user.setOrders(orderList);
+            return user;
+        }
+        throw new ShopException(ShopExceptionType.USER_NOT_EXISTS);
     }
 
     public List<User> readAllUsers() {
@@ -39,11 +43,20 @@ public class ShopService {
 
     public void updateUser(User user) {
         if (userRepository.existsById(user.getId())) {
-            userRepository.save(user);
-        }
+            User savedUser = userRepository.save(user);
+            user.getOrders().forEach(order -> {
+                order.setUser(savedUser);
+                orderRepository.save(order);
+            });
+        } else
+            throw new ShopException(ShopExceptionType.USER_NOT_EXISTS);
+
     }
 
     public void deleteUser(UUID id) {
-        userRepository.deleteById(id);
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+        } else
+            throw new ShopException(ShopExceptionType.USER_NOT_EXISTS);
     }
 }

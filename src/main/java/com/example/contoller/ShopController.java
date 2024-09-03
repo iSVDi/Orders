@@ -5,7 +5,9 @@ import com.example.model.User;
 import com.example.model.UserViews;
 import com.example.service.ShopService;
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,17 +16,19 @@ import java.util.UUID;
 @RestController
 @RequestMapping()
 @AllArgsConstructor
+@Validated
+
 public class ShopController {
 
     private final ShopService service;
 
     @PostMapping("createUser")
-    void createUser(@RequestBody User user) {
+    void createUser(@Valid @RequestBody User user) {
         service.createUser(user);
     }
 
     @GetMapping("readUser/{id}")
-    User readUser(@PathVariable UUID id) {
+    User readUser(@Valid @PathVariable UUID id) {
         return service.readUser(id);
     }
 
@@ -35,7 +39,7 @@ public class ShopController {
     }
 
     @PutMapping("updateUser")
-    void updateUser(@RequestBody User user) {
+    void updateUser(@Valid @RequestBody User user) {
         service.updateUser(user);
     }
 
